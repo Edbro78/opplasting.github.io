@@ -1,0 +1,16 @@
+{
+    "title": "Opplasting 1.0",
+    "description": "Dette er en eksempel JSON fil",
+    "version": "1.0.0",
+    "data": [
+        {
+            "id": 1,
+            "name": "Eksempel 1"
+        },
+        {
+            "id": 2,
+            "name": "Eksempel 2"
+        }
+    ]
+}
+
