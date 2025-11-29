@@ -14,22 +14,11 @@ let correctAnswers = 0;
 let maxPossibleQuestions = 0;
 let gameActive = false;
 
-// DOM elements
-const startScreen = document.getElementById('startScreen');
-const gameScreen = document.getElementById('gameScreen');
-const gameOverScreen = document.getElementById('gameOverScreen');
-const startBtn = document.getElementById('startBtn');
-const operationBtns = document.querySelectorAll('.operation-btn');
-const speedBtns = document.querySelectorAll('.speed-btn');
-const questionText = document.getElementById('questionText');
-const answerBtns = document.querySelectorAll('.answer-btn');
-const globalTimerDisplay = document.getElementById('globalTimer');
-const scoreDisplay = document.getElementById('score');
-const questionProgressBar = document.getElementById('questionProgressBar');
-const finalScoreDisplay = document.getElementById('finalScore');
-const finalAccuracyDisplay = document.getElementById('finalAccuracy');
-const playAgainBtn = document.getElementById('playAgainBtn');
-const towerContainer = document.getElementById('towerContainer');
+// DOM elements (will be initialized after DOM loads)
+let startScreen, gameScreen, gameOverScreen, startBtn, operationBtns, speedBtns;
+let questionText, answerBtns, globalTimerDisplay, scoreDisplay;
+let questionProgressBar, finalScoreDisplay, finalAccuracyDisplay;
+let playAgainBtn, towerContainer;
 
 // Load config.json
 async function loadConfig() {
@@ -53,6 +42,23 @@ async function loadConfig() {
 
 // Initialize game
 async function init() {
+    // Get DOM elements after page is loaded
+    startScreen = document.getElementById('startScreen');
+    gameScreen = document.getElementById('gameScreen');
+    gameOverScreen = document.getElementById('gameOverScreen');
+    startBtn = document.getElementById('startBtn');
+    operationBtns = document.querySelectorAll('.operation-btn');
+    speedBtns = document.querySelectorAll('.speed-btn');
+    questionText = document.getElementById('questionText');
+    answerBtns = document.querySelectorAll('.answer-btn');
+    globalTimerDisplay = document.getElementById('globalTimer');
+    scoreDisplay = document.getElementById('score');
+    questionProgressBar = document.getElementById('questionProgressBar');
+    finalScoreDisplay = document.getElementById('finalScore');
+    finalAccuracyDisplay = document.getElementById('finalAccuracy');
+    playAgainBtn = document.getElementById('playAgainBtn');
+    towerContainer = document.getElementById('towerContainer');
+    
     await loadConfig();
     setupEventListeners();
 }
@@ -374,4 +380,8 @@ function resetGame() {
 }
 
 // Initialize when page loads
-init();
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+} else {
+    init();
+}
