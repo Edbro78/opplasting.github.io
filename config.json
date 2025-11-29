@@ -1,0 +1,9 @@
+{
+  "modes": {
+    "slow": 6000,
+    "medium": 4000,
+    "fast": 2000
+  },
+  "gameDuration": 60
+}
+

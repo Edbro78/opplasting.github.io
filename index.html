@@ -3,16 +3,93 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Opplasting 1.0</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Vilma`s Mattespill</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <div class="container">
-        <h1>Velkommen</h1>
-        <div id="content"></div>
+    <!-- Start Screen -->
+    <div id="startScreen" class="screen active">
+        <div class="container">
+            <h1>Vilma`s Mattespill</h1>
+            <p class="subtitle">Test din matematikk-fartighet!</p>
+            
+            <div class="selection-group">
+                <h2>Velg operasjon:</h2>
+                <div class="button-group">
+                    <button class="operation-btn" data-operation="addition"><span style="color: #ffffff; filter: brightness(0) invert(1);">+</span> Addisjon</button>
+                    <button class="operation-btn" data-operation="subtraction"><span style="color: #ffffff; filter: brightness(0) invert(1);">−</span> Subtraksjon</button>
+                    <button class="operation-btn" data-operation="multiplication"><span style="color: #ffffff; filter: brightness(0) invert(1);">×</span> Multiplikasjon</button>
+                    <button class="operation-btn" data-operation="division"><span style="color: #ffffff; filter: brightness(0) invert(1);">÷</span> Divisjon</button>
+                </div>
+            </div>
+
+            <div class="selection-group">
+                <h2>Velg hastighet:</h2>
+                <div class="button-group">
+                    <button class="speed-btn" data-speed="slow"><span style="color: #ffffff; filter: brightness(0) invert(1);">🐢</span> Langsom (6 sek)</button>
+                    <button class="speed-btn" data-speed="medium"><span style="color: #ffffff; filter: brightness(0) invert(1);">⚡</span> Medium (4 sek)</button>
+                    <button class="speed-btn" data-speed="fast"><span style="color: #ffffff; filter: brightness(0) invert(1);">🚀</span> Rask (2 sek)</button>
+                </div>
+            </div>
+
+            <button id="startBtn" class="start-button" disabled>Start Spill</button>
+        </div>
     </div>
-    <script src="data.json" type="application/json" id="data-json"></script>
+
+    <!-- Game Screen -->
+    <div id="gameScreen" class="screen">
+        <div class="game-header">
+            <div class="timer-display">
+                <span class="timer-label">Tid igjen:</span>
+                <span id="globalTimer">60</span>s
+            </div>
+            <div class="score-display">
+                <span class="score-label">Poeng:</span>
+                <span id="score">0</span>
+            </div>
+        </div>
+
+        <div class="game-content-wrapper">
+            <div class="question-container">
+                <div id="questionText" class="question-text"></div>
+                <div class="progress-bar-container">
+                    <div id="questionProgressBar" class="progress-bar"></div>
+                </div>
+            </div>
+
+            <div id="towerContainer" class="tower-container"></div>
+        </div>
+
+        <div class="answers-container">
+            <button class="answer-btn" data-index="0"></button>
+            <button class="answer-btn" data-index="1"></button>
+            <button class="answer-btn" data-index="2"></button>
+            <button class="answer-btn" data-index="3"></button>
+        </div>
+    </div>
+
+    <!-- Game Over Screen -->
+    <div id="gameOverScreen" class="screen">
+        <div class="container">
+            <h1>🎮 Spill Ferdig!</h1>
+            <div class="stats-container">
+                <div class="stat-box">
+                    <div class="stat-label">Totalt Poeng</div>
+                    <div id="finalScore" class="stat-value">0</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-label">Riktige svar</div>
+                    <div id="finalAccuracy" class="stat-value">0 av 0 (0%)</div>
+                </div>
+            </div>
+            <button id="playAgainBtn" class="start-button">Spill Igjen</button>
+        </div>
+    </div>
+
+    <script src="config.json" type="application/json" id="config-json"></script>
     <script src="script.js"></script>
 </body>
 </html>
-
