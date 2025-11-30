@@ -231,6 +231,62 @@ h1 {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
+.hourglass-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.hourglass {
+    width: 60px;
+    height: 80px;
+    position: relative;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    clip-path: polygon(0% 0%, 100% 0%, 80% 20%, 80% 40%, 100% 60%, 100% 100%, 0% 100%, 0% 60%, 20% 40%, 20% 20%);
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+.hourglass-top {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    clip-path: polygon(0% 0%, 100% 0%, 80% 20%, 20% 20%);
+}
+
+.hourglass-bottom {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 40px;
+    background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+    clip-path: polygon(20% 80%, 80% 80%, 100% 100%, 0% 100%);
+    overflow: hidden;
+}
+
+.hourglass-sand {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    background: linear-gradient(135deg, #ffd700 0%, #ff8c00 100%);
+    transition: height 1s linear;
+    clip-path: polygon(20% 80%, 80% 80%, 100% 100%, 0% 100%);
+}
+
+.timer-text {
+    font-size: 1.5em;
+    font-weight: 700;
+    color: #ffd700;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
 .timer-label,
 .score-label {
     margin-right: 10px;
@@ -240,6 +296,44 @@ h1 {
 #globalTimer {
     color: #ffd700;
     font-size: 1.2em;
+}
+
+.warning-message {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 3em;
+    font-weight: 900;
+    color: #ff0000;
+    text-shadow: 0 0 20px rgba(255, 0, 0, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+    font-family: 'Fredoka One', cursive;
+    animation: pulse 0.5s ease-in-out;
+}
+
+.warning-message.show {
+    opacity: 1;
+}
+
+.warning-message.dramatic {
+    font-size: 4em;
+    animation: dramaticPulse 0.3s ease-in-out infinite;
+    color: #ff0000;
+    text-shadow: 0 0 30px rgba(255, 0, 0, 1), 0 0 60px rgba(255, 0, 0, 0.8), 2px 2px 4px rgba(0, 0, 0, 0.5);
+}
+
+@keyframes pulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.1); }
+}
+
+@keyframes dramaticPulse {
+    0%, 100% { transform: translate(-50%, -50%) scale(1); }
+    50% { transform: translate(-50%, -50%) scale(1.2); }
 }
 
 #score {

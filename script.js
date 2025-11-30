@@ -19,6 +19,7 @@ let startScreen, gameScreen, gameOverScreen, startBtn, operationBtns, speedBtns;
 let questionText, answerBtns, globalTimerDisplay, scoreDisplay;
 let questionProgressBar, finalScoreDisplay, finalAccuracyDisplay;
 let playAgainBtn, towerContainer;
+let hourglassSand, warningMessage;
 
 // Load config.json
 async function loadConfig() {
@@ -58,6 +59,8 @@ async function init() {
     finalAccuracyDisplay = document.getElementById('finalAccuracy');
     playAgainBtn = document.getElementById('playAgainBtn');
     towerContainer = document.getElementById('towerContainer');
+    hourglassSand = document.getElementById('hourglassSand');
+    warningMessage = document.getElementById('warningMessage');
     
     await loadConfig();
     setupEventListeners();
@@ -133,13 +136,52 @@ function startGame() {
     // Show game screen
     showScreen('gameScreen');
 
-    // Start global timer
+    // Start global timer with hourglass animation
     let timeRemaining = config.gameDuration;
+    const totalTime = config.gameDuration;
     globalTimerDisplay.textContent = timeRemaining;
+    
+    // Reset hourglass
+    if (hourglassSand) {
+        hourglassSand.style.height = '100%';
+    }
+    
+    // Reset warning message
+    if (warningMessage) {
+        warningMessage.classList.remove('show', 'dramatic');
+        warningMessage.textContent = '';
+    }
 
     globalTimer = setInterval(() => {
         timeRemaining--;
         globalTimerDisplay.textContent = timeRemaining;
+        
+        // Update hourglass sand level
+        if (hourglassSand) {
+            const sandHeight = (timeRemaining / totalTime) * 100;
+            hourglassSand.style.height = sandHeight + '%';
+        }
+        
+        // Show warning at 30 seconds (halfway)
+        if (timeRemaining === 30) {
+            showWarning('Halvveis!', false);
+        }
+        
+        // Show dramatic warning at 10 seconds
+        if (timeRemaining === 10) {
+            showWarning('10 SEKUND IGJEN!', true);
+        }
+        
+        // Update timer color when low
+        if (timeRemaining <= 10) {
+            globalTimerDisplay.style.color = '#ff0000';
+            globalTimerDisplay.style.textShadow = '0 0 10px rgba(255, 0, 0, 0.8)';
+        } else if (timeRemaining <= 30) {
+            globalTimerDisplay.style.color = '#ff8800';
+        } else {
+            globalTimerDisplay.style.color = '#ffd700';
+            globalTimerDisplay.style.textShadow = '2px 2px 4px rgba(0, 0, 0, 0.3)';
+        }
 
         if (timeRemaining <= 0) {
             endGame();
@@ -159,17 +201,17 @@ function generateQuestion() {
     // Generate question based on operation
     switch (selectedOperation) {
         case 'addition':
-            // Ensure sum never exceeds 15 (easier)
-            num1 = Math.floor(Math.random() * 15) + 1;
-            num2 = Math.floor(Math.random() * (15 - num1)) + 1;
+            // Ensure sum never exceeds 10 (even easier)
+            num1 = Math.floor(Math.random() * 10) + 1;
+            num2 = Math.floor(Math.random() * (10 - num1)) + 1;
             answer = num1 + num2;
             question = `${num1} + ${num2}`;
             break;
 
         case 'subtraction':
-            // Ensure result never exceeds 15 (easier)
-            answer = Math.floor(Math.random() * 15) + 1;
-            num2 = Math.floor(Math.random() * 10) + 1;
+            // Ensure result never exceeds 10 (even easier)
+            answer = Math.floor(Math.random() * 10) + 1;
+            num2 = Math.floor(Math.random() * 8) + 1;
             num1 = num2 + answer;
             question = `${num1} - ${num2}`;
             break;
@@ -182,9 +224,9 @@ function generateQuestion() {
             break;
 
         case 'division':
-            // Ensure whole number result and dividend <= 25 (easier)
-            num2 = Math.floor(Math.random() * 9) + 1;
-            answer = Math.floor(Math.random() * Math.floor(25 / num2)) + 1;
+            // Ensure whole number result and dividend <= 20 (even easier)
+            num2 = Math.floor(Math.random() * 5) + 1;
+            answer = Math.floor(Math.random() * Math.floor(20 / num2)) + 1;
             num1 = num2 * answer;
             question = `${num1} ÷ ${num2}`;
             break;
@@ -317,6 +359,26 @@ function handleAnswer(selectedIndex) {
     }, 1000);
 }
 
+function showWarning(message, isDramatic) {
+    if (!warningMessage) return;
+    
+    warningMessage.textContent = message;
+    warningMessage.classList.add('show');
+    
+    if (isDramatic) {
+        warningMessage.classList.add('dramatic');
+    } else {
+        warningMessage.classList.remove('dramatic');
+    }
+    
+    // Hide warning after 2 seconds
+    setTimeout(() => {
+        if (warningMessage) {
+            warningMessage.classList.remove('show');
+        }
+    }, 2000);
+}
+
 function addTowerBlock() {
     const block = document.createElement('div');
     block.className = 'tower-block';
@@ -333,14 +395,14 @@ function endGame() {
         progressInterval = null;
     }
 
-    // Calculate accuracy as percentage of max possible questions
-    const accuracy = maxPossibleQuestions > 0 
-        ? Math.round((correctAnswers / maxPossibleQuestions) * 100) 
+    // Calculate accuracy as percentage of actual questions answered
+    const accuracy = totalQuestions > 0 
+        ? Math.round((correctAnswers / totalQuestions) * 100) 
         : 0;
 
     // Display results
     finalScoreDisplay.textContent = score;
-    finalAccuracyDisplay.textContent = `${correctAnswers} av ${maxPossibleQuestions} (${accuracy}%)`;
+    finalAccuracyDisplay.textContent = `${correctAnswers} av ${totalQuestions} (${accuracy}%)`;
 
     // Show game over screen
     setTimeout(() => {

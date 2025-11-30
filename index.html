@@ -29,9 +29,9 @@
             <div class="selection-group">
                 <h2>Velg hastighet:</h2>
                 <div class="button-group">
-                    <button class="speed-btn" data-speed="slow"><span style="color: #ffffff; filter: brightness(0) invert(1);">🐢</span> Langsom (6 sek)</button>
-                    <button class="speed-btn" data-speed="medium"><span style="color: #ffffff; filter: brightness(0) invert(1);">⚡</span> Medium (4 sek)</button>
-                    <button class="speed-btn" data-speed="fast"><span style="color: #ffffff; filter: brightness(0) invert(1);">🚀</span> Rask (2 sek)</button>
+                    <button class="speed-btn" data-speed="slow"><span style="color: #ffffff; filter: brightness(0) invert(1);">🐢</span> Langsom (10 sek)</button>
+                    <button class="speed-btn" data-speed="medium"><span style="color: #ffffff; filter: brightness(0) invert(1);">⚡</span> Medium (6 sek)</button>
+                    <button class="speed-btn" data-speed="fast"><span style="color: #ffffff; filter: brightness(0) invert(1);">🚀</span> Rask (4 sek)</button>
                 </div>
             </div>
 
@@ -43,14 +43,25 @@
     <div id="gameScreen" class="screen">
         <div class="game-header">
             <div class="timer-display">
-                <span class="timer-label">Tid igjen:</span>
-                <span id="globalTimer">60</span>s
+                <div class="hourglass-container">
+                    <div class="hourglass">
+                        <div class="hourglass-top"></div>
+                        <div class="hourglass-bottom">
+                            <div id="hourglassSand" class="hourglass-sand"></div>
+                        </div>
+                    </div>
+                    <div class="timer-text">
+                        <span id="globalTimer">60</span>s
+                    </div>
+                </div>
             </div>
             <div class="score-display">
                 <span class="score-label">Poeng:</span>
                 <span id="score">0</span>
             </div>
         </div>
+        
+        <div id="warningMessage" class="warning-message"></div>
 
         <div class="game-content-wrapper">
             <div class="question-container">
